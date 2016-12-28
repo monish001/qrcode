@@ -20,7 +20,7 @@ var QRClient = function() {
     try {
       currentCallback = callback;
 
-      // WAIT BEFORE POST MESSAGE IF PROCESSING IS ALREADY GOING ON.
+      // todo WAIT BEFORE POST MESSAGE IF PROCESSING IS ALREADY GOING ON.
 
       imageWorker.postMessage({
         data: imageData.data,
