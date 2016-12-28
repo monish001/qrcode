@@ -4,7 +4,6 @@ var QRClient = function() {
   var imageWorker = new Worker('scripts/jsqrcode/qrworker.js');
       imageWorker.onmessage = function(e){
         if(e.data) {
-          debugger;
           currentCallback(e.data);
         }
       };
