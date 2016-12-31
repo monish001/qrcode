@@ -1,13 +1,16 @@
 var QRClient = function() {
 
   var currentCallback;
+  var isWorkerInProgress = false;
   var imageWorker = new Worker('scripts/jsqrcode/qrworker.js');
       imageWorker.onmessage = function(e){
+        isWorkerInProgress = false;
         if(e.data) {
           currentCallback(e.data);
         }
       };
       imageWorker.onerror = function(error){
+        isWorkerInProgress = false;
         function WorkerException(message){
           this.name = 'WorkerException';
           this.message = message;
@@ -17,10 +20,13 @@ var QRClient = function() {
 
 
   this.decode = function(imageData, callback) {
+    if(isWorkerInProgress){
+      return;
+    }
     try {
       currentCallback = callback;
 
-      // todo WAIT BEFORE POST MESSAGE IF PROCESSING IS ALREADY GOING ON.
+      isWorkerInProgress = true;
 
       imageWorker.postMessage({
         data: imageData.data,
